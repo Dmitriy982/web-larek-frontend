@@ -48,3 +48,18 @@ export interface ICard<T> {
     image: string;
     status: T;
 }
+
+export interface IOrderResult {
+    id: string;
+}
+
+interface ILarekAPI {
+    getCardList: () => Promise<IProduct[]>;
+    orderProducts: (order: IOrder) => Promise<IOrderResult>;
+}
+
+interface IPage {
+    counter: number;
+    catalog: HTMLElement[];
+    locked: boolean;
+}
