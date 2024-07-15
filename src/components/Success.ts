@@ -1,5 +1,5 @@
-import {Component} from "../base/Components";
-import {ensureElement} from "../../utils/utils";
+import {Component} from "./base/Components";
+import {ensureElement} from "../utils/utils";
 
 interface ISuccess {
     total: number;

@@ -10,6 +10,7 @@ export interface ICard<T> {
     image: string;
     category: Category;
     buttonToggle: boolean;
+    index: number;
 }
 
 interface ICardActions {
@@ -30,6 +31,7 @@ export class Card<T> extends Component<ICard<T>> {
     protected _price: HTMLElement;
     protected _category: HTMLElement;
     protected _button?: HTMLButtonElement;
+    protected _index?: HTMLElement;
 
     constructor(protected blockName: string, container: HTMLElement, actions?: ICardActions) {
         super(container);
@@ -40,6 +42,8 @@ export class Card<T> extends Component<ICard<T>> {
         this._description = container.querySelector(`.${blockName}__text`);
         this._price = container.querySelector(`.${blockName}__price`);
         this._category = container.querySelector(`.${blockName}__category`);
+        this._index = container.querySelector('.basket__item-index');
+        
         if (actions?.onClick) {
             if (this._button) {
                 this._button.addEventListener('click', actions.onClick);
@@ -61,6 +65,10 @@ export class Card<T> extends Component<ICard<T>> {
         this.setText(this._title, value);
     }
 
+    set index (value: number) {
+        this.setText(this._index, value);
+    }
+
     set price(value: string) {
         if (value == null){
             this.setText(this._price, 'Бесценно');
@@ -69,17 +77,17 @@ export class Card<T> extends Component<ICard<T>> {
             this.setText(this._price, value+' синапсов');
         }
         if (this._button && value === null) {
-            this._button.disabled = true;
+            this.setDisabled(this._button, true);
         }
     }
 
     set buttonToggle (value:boolean) {
         if (value === true && this._button.disabled === false) {
-            this._button.disabled = false;
+            this.setDisabled(this._button, false);
         } 
         else 
         {
-            this._button.disabled = true;
+            this.setDisabled(this._button, true);
         }
     }
 

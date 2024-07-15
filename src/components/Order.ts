@@ -5,10 +5,12 @@ import {EventEmitter, IEvents} from "./base/events";
 
 export class Order extends Form<IOrderForm> {
     protected _buttonNext?: HTMLButtonElement;
+    protected _buttons?: NodeList;
     
     constructor(container: HTMLFormElement, events: IEvents) {
         super(container, events);
         this._buttonNext = container.querySelector(`.order__button`);
+        this._buttons = container.querySelectorAll('.order__buttons button');
     }
 
 
@@ -25,8 +27,7 @@ export class Order extends Form<IOrderForm> {
     }
 
     initializePaymentButtons() {
-        const buttons = this.container.querySelectorAll('.order__buttons button');
-        buttons.forEach(button => {
+        this._buttons.forEach(button => {
             if (button instanceof HTMLButtonElement) {
                 button.addEventListener('click', () => {
                     this.setActiveButton(button);
@@ -36,13 +37,12 @@ export class Order extends Form<IOrderForm> {
     }
 
     setActiveButton(activeButton: HTMLButtonElement) {
-        const buttons = this.container.querySelectorAll('.order__buttons button');
-        buttons.forEach(button => {
+        this._buttons.forEach(button => {
             if (button instanceof HTMLButtonElement) {
-                button.classList.remove('button_alt-active');
+                this.toggleClass(button, 'button_alt-active', false);
             }
         });
-        activeButton.classList.add('button_alt-active');
+        this.toggleClass(activeButton, 'button_alt-active', true);
         if (activeButton.name === 'card') {
             this.onInputChange('payment', 'online');
         } else if (activeButton.name === 'cash') {

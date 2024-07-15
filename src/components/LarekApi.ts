@@ -1,8 +1,9 @@
 import { Api, ApiListResponse } from './base/api';
-import {IProduct} from "../types";
+import {IOrder, IProduct, IOrderResult} from "../types";
 
 export interface IAuctionAPI {
-    getLotList: () => Promise<IProduct[]>;
+    getCardList: () => Promise<IProduct[]>;
+    orderLots: (order: IOrder) => Promise<IOrderResult>;
 }
 
 export class AuctionAPI extends Api implements IAuctionAPI {
@@ -13,10 +14,8 @@ export class AuctionAPI extends Api implements IAuctionAPI {
         this.cdn = cdn;
     }
 
-    
-
-    getLotList(): Promise<IProduct[]> {
-        return this.get('/lot').then((data: ApiListResponse<IProduct>) =>
+    getCardList(): Promise<IProduct[]> {
+        return this.get('/product').then((data: ApiListResponse<IProduct>) =>
             data.items.map((item) => ({
                 ...item,
                 image: this.cdn + item.image
@@ -24,5 +23,10 @@ export class AuctionAPI extends Api implements IAuctionAPI {
         );
     }
 
-    
+    orderLots(order: IOrder): Promise<IOrderResult> {
+        return this.post('/order', order).then(
+            (data: IOrderResult) => data
+        );
+    }
+
 }
