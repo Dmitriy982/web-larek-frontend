@@ -135,7 +135,7 @@ events.on('order:submit', () => {
 		content: contacts.render({
 			email: '',
 			phone: '',
-			valid: true,
+			valid: false,
 			errors: [],
 		}),
 	});
